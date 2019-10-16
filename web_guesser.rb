@@ -1,27 +1,28 @@
 require 'sinatra'
 require 'sinatra/reloader'
 
-NUMBER = rand(100)+1
-color = 
+@@number = rand(100)+1
+color = "white"
+guess_count = 6
 
-def difference(input)
-    return input - NUMBER
+def difference(input, number)
+    return input - number
 end
-def check_guess(input_guess)
+def check_guess(input_guess, number)
     if !input_guess || input_guess == ""
         return ""
     else
         input_guess = input_guess.to_i
     end
-    if input_guess == NUMBER
-        return "Correct! The secret number is #{NUMBER}"
-    elsif input_guess < NUMBER-5
+    if input_guess == number
+        return "Correct! The secret number is #{number}"
+    elsif input_guess < number-5
         return "Way too low!"
-    elsif input_guess < NUMBER
+    elsif input_guess < number
         return "Too low!"
-    elsif input_guess > NUMBER+5
+    elsif input_guess > number+5
         return "Way too high!"
-    elsif input_guess > NUMBER
+    elsif input_guess > number
         return "Too high!"
     else
         return ""
@@ -38,11 +39,26 @@ def change_color(input_diff)
         return "white"
     end
 end
+def guess_counter(input_count, input_operation)
+    if input_count < 1
+        @@number = rand(100)+1
+        return 5
+    end
+    return input_count + input_operation
+end
 
 get '/' do
     guess = params["guess"].to_i
-    diff = difference(guess)
-    message = check_guess(guess)
+    cheat = params["cheat"]
+    guess_count = guess_counter(guess_count,-1)
+    diff = difference(guess, @@number)
+    message = check_guess(guess, @@number)
     color = change_color(diff)
-    erb :index, :locals => {:number => NUMBER, :message => message, :color => color}
+    erb :index, :locals => {
+        :number => @@number, 
+        :message => message, 
+        :color => color, 
+        :guess_count => guess_count, 
+        :cheat => cheat
+    }
 end

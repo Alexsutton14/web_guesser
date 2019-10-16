@@ -9,6 +9,9 @@
   <body>
     <p>
       Guess the secret number!
+      <% if cheat %>
+      <%= "Psst, the secret number is #{number}"  %>
+      <% end %>
     </p>
     <form>
       <input type='text' name='guess' />
@@ -16,6 +19,7 @@
     </form>
     <p>
     <%= message %>
+    You have <%= guess_count%> guesses left!
     </p>
   </body>
 </html>
