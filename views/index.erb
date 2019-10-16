@@ -5,6 +5,7 @@
         background: <%= color %>;
     }
     </style>
+    <title>Web Guesser</title>
   </head>
   <body>
     <p>
@@ -19,7 +20,13 @@
     </form>
     <p>
     <%= message %>
+    </p>
+    <p>
     You have <%= guess_count%> guesses left!
+    <br>
+    <% if guess_count == 0 || diff == 0%>
+    <%= "A new secret number has been generated!" %>
+    <% end%>
     </p>
   </body>
 </html>

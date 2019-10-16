@@ -41,10 +41,13 @@ def change_color(input_diff)
 end
 def guess_counter(input_count, input_operation)
     if input_count < 1
-        @@number = rand(100)+1
+        generate_number()
         return 5
     end
     return input_count + input_operation
+end
+def generate_number()
+    @@number = rand(100)+1
 end
 
 get '/' do
@@ -54,11 +57,16 @@ get '/' do
     diff = difference(guess, @@number)
     message = check_guess(guess, @@number)
     color = change_color(diff)
+    if diff == 0
+        generate_number()
+        guess_count = 5
+    end
     erb :index, :locals => {
         :number => @@number, 
         :message => message, 
         :color => color, 
         :guess_count => guess_count, 
-        :cheat => cheat
+        :cheat => cheat,
+        :diff => diff
     }
 end
